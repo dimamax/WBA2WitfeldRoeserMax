@@ -1,0 +1,32 @@
+{
+  "name": "kickoff",
+  "version": "1.0.0",
+  "description": "aufgaben zum lösen",
+  "main": "aufgabe1.js",
+  "dependencies": {
+    "chalk": "^2.3.2",
+    "node.js": "^0.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "tst"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dimamax/WBA2WitfeldRoeserMax.git"
+  },
+  "keywords": [
+    "aufgabe1",
+    "aufgabe2",
+    "aufgabe3",
+    "kickoff",
+    "chalk",
+    "staedte"
+  ],
+  "author": "WBA2SS18WitfeldRoeserMax",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dimamax/WBA2WitfeldRoeserMax/issues"
+  },
+  "homepage": "https://github.com/dimamax/WBA2WitfeldRoeserMax#readme"
+}
