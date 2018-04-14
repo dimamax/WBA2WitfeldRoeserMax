@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-fs.readFile("../staedte.json", function(err, data) {
+fs.readFile("./staedte.json", function(err, data) {
 
     if(err){console.log(err);
     return;

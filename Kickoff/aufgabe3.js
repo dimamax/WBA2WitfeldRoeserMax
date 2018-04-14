@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-fs.readFile("../staedte.json", function(err, data) {
+fs.readFile("./staedte.json", function(err, data) {
 
     if(err){console.log(err);
         return;
@@ -13,6 +13,6 @@ fs.readFile("../staedte.json", function(err, data) {
         return a.population - b.population
     })
 
-    fs.writeFile("../staedte_sortiert", JSON.stringify(daten));
+    fs.writeFile("./staedte_sortiert", JSON.stringify(daten));
 
 });

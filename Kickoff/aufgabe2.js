@@ -1,7 +1,7 @@
 var fs = require('fs');
 const chalk = require('Chalk');
 
-fs.readFile("../staedte.json", function(err, data) {
+fs.readFile("./staedte.json", function(err, data) {
 
     if(err){console.log(err);
         return;
