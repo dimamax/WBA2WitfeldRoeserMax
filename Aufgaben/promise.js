@@ -1,6 +1,5 @@
 fs = require('fs');
 
-
 var path1 = "./staedte.json";
 var path2 = "./mehr_staedte.json";
 
@@ -14,13 +13,10 @@ function getFile(path) {
                 var daten = JSON.parse(data1);
                 resolve(daten);
             }
-
-
         });
-
-
     });
 }
+
 var finalFile;
 var userdetails1;
 var userdetails2;
@@ -39,8 +35,8 @@ userpromise1.then(function(result1) { userdetails1 = result1;
 
             }).catch(function(err) {
                 console.log(err);
-                });
-
-        }).catch(function(err) {
-            console.log(err);
             });
+
+    }).catch(function(err) {
+        console.log(err);
+    });

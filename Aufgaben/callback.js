@@ -6,20 +6,17 @@ var list3;
 
 fs.readFile("./staedte.json", function(err, data1) {
 
-    list2 = data1;
+    list = JSON.parse(data1);
+    console.log(list);
 
     fs.readFile("./mehr_staedte.json", function(err, data2){
 
         if (err) console.log(error);
 
+        else list2 = JSON.parse(data2);
 
-        else list = data2;
-        var daten = JSON.parse(list);
+        list3 = list.cities.concat(list2.cities);
 
-        var daten2 = JSON.parse(list2);
-
-        list3 = daten.cities.concat(daten2.cities);
         console.log(list3);
     });
 });
-
