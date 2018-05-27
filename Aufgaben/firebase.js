@@ -1,7 +1,14 @@
 fs = require ('fs');
 
+const fire = require('firebase-rest');
+const firebase = fire.factory('481760469482-coatq22o9aepqf1li2f2lqjio5h017cn.apps.googleusercontent.com');
+const ref = firebase({paths: '/Test', auth: 'rPPVQ3TqlzSS1gBuwn0nLaYpn'});
+
+
+
 
 var path1 = "./staedte.json";
+
 function getFile(path) {
 
     return new Promise(function (resolve, reject) {
@@ -16,15 +23,17 @@ function getFile(path) {
     });
 }
 
-var userpromise1 = getFile(path1);
+var userpromise = getFile(path1);
 var userdetails;
 
 userpromise.then(function(result) { userdetails = result;
 
-    }).then(function(result) {
 
-        JSON.parse(userdetails);
+}).then(function(result) {
+    //console.log(userdetails);
 
-    }).catch(function(err) {
-        console.log(err);
-    });
+}).catch(function(err) {
+    console.log(err);
+});
+
+
