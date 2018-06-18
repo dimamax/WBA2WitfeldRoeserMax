@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server application for project",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongodb": "^3.1.0-beta4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dimamax/WBA2WitfeldRoeserMax/wiki/Proof-of-Concept"
+  },
+  "keywords": [
+    "server",
+    "app",
+    "key",
+    "value",
+    "express"
+  ],
+  "author": "Dieter Max, Ann-Sophie Witfeld, Leah Roeser",
+  "license": "ISC"
+}
