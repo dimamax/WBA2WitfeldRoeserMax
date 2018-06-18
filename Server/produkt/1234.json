@@ -1,0 +1,12 @@
+{
+  "product_id" : 1234,
+  "name" : "Apfel",
+  "kategorie" : "Obst",
+  "menge" : 30,
+  "username": "MarcoPolo",
+  "user_id" : 123456,
+  "marke": "not definded",
+  "art" : "vegan",
+  "haltbarkeit": "30.07.18",
+  "tags" : ["äpfel", "gesund", "eigenanbau"]
+}

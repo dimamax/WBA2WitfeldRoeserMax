@@ -1,0 +1,11 @@
+{
+  "user_id" : 888888,
+  "username": "MikeTyson",
+  "status" : "student",
+  "verkäufer" : false,
+  "bewertung" : 3,
+  "coordinates" : {
+    "bg": 51.022747,
+    "lg": 7.561872
+  }
+}
