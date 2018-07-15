@@ -1,5 +1,4 @@
-var express = require('express');
-var app = express();
+var app = require('express')();
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
@@ -7,31 +6,9 @@ var url = "mongodb://localhost:27017";
 
 app.use(bodyParser.json());
 
-/* app.use(bodyParser.urlencoded({
-    extended: true
-})); */
-
-/*app.get('/user', function (req, res) {
-
-    MongoClient.connect(url, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("Serverdata");
-
-        dbo.collection("profiles").find({}).toArray(function (err, result) {
-
-            console.log(result);
-            res.send(result);
-
-        });
-    });
-});*/
-
-
-// User anhand der ID in den Params zurückliefern: Coordinaten werden nicht mitgesendet
-app.get('/user/:id', function (req, res) {
+app.get('/users/:id', function (req, res) {
 
     var thisid = req.params;
-
     console.log(thisid.id);
 
     MongoClient.connect(url, function (err, db) {
@@ -48,15 +25,13 @@ app.get('/user/:id', function (req, res) {
             }
 
             else {
-                delete result.coordinates;
-
                 res.send(result);
             }
         });
     });
 });
 
-app.get('/user/:id/coordinates', function (req, res) {
+app.get('/anzeigen/:id', function (req, res) {
 
     var thisid = req.params;
 
@@ -66,27 +41,49 @@ app.get('/user/:id/coordinates', function (req, res) {
         if (err) throw err;
         var dbo = db.db("Serverdata");
 
-        dbo.collection("profil").findOne(({"user_id": parseInt(thisid.id)}), function (err, result) {
+        dbo.collection("anzeigen").findOne(({"anzeigen_id": parseInt(thisid.id)}), function (err, result) {
 
             console.log(result);
 
-            if (result == null || result.user_id!= parseInt(thisid.id)) {
+            if (result == null || result.anzeigen_id!= parseInt(thisid.id)) {
                 db.close();
-                res.send("This user doesn't exist");
+                res.send("diese anzeige existiert nicht");
             }
 
             else {
+                res.send(result);
+            }
+        });
+    });
+});
 
-                res.send(result.coordinates);
+app.get('/anzeigen', function (req, res) {
+
+    var data = req.query;
+    console.log(data);
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        var dbo = db.db("Serverdata");
+
+        dbo.collection("anzeigen").find({},data).toArray(function(err, result) {
+
+            console.log(result);
+
+            if (result == null ) {
+                db.close();
+                res.send("diese anzeige existiert nicht");
+            }
+            else {
+                res.send(result);
             }
         });
     });
 });
 
 // User aktualisieren
-app.put('/user', function(req, res) {
+app.put('/users/:id', function(req, res) {
 
-    var updatedata = req.query;
+    var updatedata = req.params;
     var newvalues = req.body;
 
     console.log(updatedata, newvalues);
@@ -106,9 +103,31 @@ app.put('/user', function(req, res) {
     res.send("updated");
 });
 
+app.put('/messages/:id', function(req, res) {
+
+    var getterid = req.params;
+    var senderid = req.query;
+    var msg = req.body.msg;
+    var newmsg = {"from" : senderid.user_id, "to": getterid.id, "msg" : msg};
+
+    console.log(newmsg);
+
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("Serverdata");
+
+        var values = { $set: {message : newmsg}};
+        dbo.collection("profil").updateOne({"user_id": parseInt(getterid.id)}, values,function(err, res) {
+            if (err) throw err;
+            console.log("msg gesendet");
+            db.close();
+        });
+    });
+    res.send("updated");
+});
 
 //Neuen User anlegen
-app.post('/user', function(req, res) {
+app.post('/users', function(req, res) {
 
     var user = req.body;
 
@@ -134,6 +153,42 @@ app.post('/user', function(req, res) {
                     console.log("Fehler");
                     res.send("Fehler: ID schon vorhanden");
                 }
+        });
+    });
+});
+
+app.post('/anzeigen', function(req, res) {
+
+    var data = req.body;
+    console.log(data.user_id);
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        var dbo = db.db("Serverdata");
+
+        dbo.collection("anzeigen").findOne(({"anzeigen_id": data.anzeigen_id}), function (err, result) {
+            if (err) throw err;
+            if (result == null /*|| result.anzeigen_id != data.anzeigen_id*/) {
+
+                dbo.collection("profil").findOne(({"produkte": data.product_id}), function (err, result1) {
+                    if (err) throw err;
+
+                    data.username = result1.username;//, result1.ort, result1.plz, result1.stadtteil;
+                    data.ort = result1.ort;
+                    data.plz = result1.plz;
+                    data.stadtteil = result1.stadtteil;
+
+                    console.log(data);
+                    dbo.collection("anzeigen").insertOne(data, function (err, res) {
+                        if (err) throw err;
+                        console.log("Anzeige erstellt");
+                        db.close();
+                    });
+                });
+
+                res.send("Anzeige erstellt");
+
+
+            }
         });
     });
 });
@@ -213,6 +268,7 @@ app.post('/produkt', function(req, res) {
 
 
 //Produkt aktualisieren
+
 app.put('/produkt', function(req, res) {
 
     var updatedata = parseInt(req.query.product_id);
@@ -234,6 +290,35 @@ app.put('/produkt', function(req, res) {
     res.send("Produkte aktualisiert");
 });
 
+app.delete('/anzeigen/:id', function(req, res) {
+    var thisid = req.params;
+    var query = {"anzeigen_id" : parseInt(thisid.id)};
+    console.log(query);
+    MongoClient.connect(url, function(err, db) {
+        var dbo = db.db("Serverdata");
+        dbo.collection("anzeigen").deleteOne(query, function(err, obj) {
+            if (err) throw err;
+            console.log("1 document deleted");
+            db.close();
+        });
+        res.send("anzeige gelöscht");
+    });
+});
+
+app.delete('/users/:id', function(req, res) {
+    var thisid = req.params;
+    var query = {"user_id" : parseInt(thisid.id)};
+    console.log(query);
+    MongoClient.connect(url, function(err, db) {
+        var dbo = db.db("Serverdata");
+        dbo.collection("profil").deleteOne(query, function(err, obj) {
+            if (err) throw err;
+            console.log("1 document deleted");
+            db.close();
+        });
+        res.send("benutzer gelöscht");
+    });
+});
 
 app.listen(3000, function () {
     console.log('listening on port 3000!');
