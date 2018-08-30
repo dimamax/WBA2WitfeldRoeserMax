@@ -4,15 +4,61 @@ var express = require('express'),
 var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
+var stdio = require('stdio');
+var stdin = process.openStdin();
+
+/*
+
+let loggedIn = false;
+let uName;
+
+    if (parseInt(eingabe) == 1) {
+        console.log("Eneter Username");
+        stdin.addListener("data", function(d) {
+            uName = d;
+            console.log(d.toString().trim());
+
+            stdin.addListener("pass", function(p) {
+
+                pass = p;
+                console.log(d.toString().trim());
+        });
+    });
+   }
+});
+
+
+/*
 
 /*socket.on('event', function(data){});
 socket.on('disconnect', function(){});*/
+
+/*
+var stdin = process.openStdin();
+var uname;
+var pass;
+
+console.log("enter id");
+
+stdin.addListener("data", function(d) {
+
+    console.log("you entered: " +
+        d.toString().trim());
+    uname = d.toString().trim();
+
+    console.log("enter password: ");
+
+    stdin.addListener("data", function(d) {
+        pass= d.toString().trim();
+    });
+});
+*/
 
 var dHost = 'http://localhost';
 var dPort = 3000;
 var dUrl = dHost + ':' + dPort;
 
-
+var realUser = false;
 
 app.get('/newmessages/:id', function(req,res){
 
@@ -112,27 +158,28 @@ app.post('/users', function(req, res) {
     });
 });
 
+
 app.put('/messages/:id', function(req, res) {
     var getterid = req.params;
     var senderid = req.query;
     var msg = req.body.msg;
-    var newmsg = {"from" : senderid.user_id, "to": getterid.id, "msg" : msg};
-
-    var url = dUrl + '/users/' + getterid.id + "?user_id=" + senderid.user_id;
+    var newmsg = {"from" : parseInt(senderid.user_id), "to": parseInt(getterid.id), "msg" : msg};
+    console.log(newmsg);
+    var url = dUrl + '/users/' + parseInt(getterid.id) + "?user_id=" + parseInt(senderid.user_id);
     console.log(url);
 
-    request.post({
+    request.put({
         url: url,
         body: newmsg,
         json: true
     }, function(error, response, body){
         console.log(body);
-        res.send(response);
+        res.send("msg gesendet");
     });
 });
-
-
 
 app.listen(8080,function(){
     console.log("Dienstnutzer verfügbar auf Port 8080")
 });
+
+
