@@ -6,34 +6,6 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 var stdio = require('stdio');
 var stdin = process.openStdin();
-
-/*
-
-let loggedIn = false;
-let uName;
-
-    if (parseInt(eingabe) == 1) {
-        console.log("Eneter Username");
-        stdin.addListener("data", function(d) {
-            uName = d;
-            console.log(d.toString().trim());
-
-            stdin.addListener("pass", function(p) {
-
-                pass = p;
-                console.log(d.toString().trim());
-        });
-    });
-   }
-});
-
-
-/*
-
-/*socket.on('event', function(data){});
-socket.on('disconnect', function(){});*/
-
-/*
 var stdin = process.openStdin();
 var uname;
 var pass;
